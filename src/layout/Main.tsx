@@ -10,10 +10,13 @@ import {
   useDisclosure,
   Text,
   IconButton,
+  Heading,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
+import { useUser } from "../context/useContext";
 
 function MainLayout({ children }: PropsWithChildren) {
+  const { name, location } = useUser();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -24,7 +27,12 @@ function MainLayout({ children }: PropsWithChildren) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader display="flex" alignItems="center">
-            <Text>Nome do Usuário</Text>
+            <Box display="flex" flexDir="column">
+              <Heading>{name}</Heading>
+              <Text color="gray.500" size="sm">
+                {location}
+              </Text>
+            </Box>
             <IconButton
               aria-label="Fechar menu"
               marginLeft="auto"
