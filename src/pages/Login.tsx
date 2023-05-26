@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import people from "../imgs/diversas-pessoas-esperando-na-fila-do-hospital-e-assinando-papéis-que-o-médico-dá-aguardando-para-tomar-tiros-ou-serem-testadas-204700619.jpg";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useUser } from "../context/useContext";
 
 type Options = 1 | 2 | 3;
@@ -21,6 +21,7 @@ function Login() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [formNumber, setFormNumber] = useState<Options>(1);
+  const navigate = useNavigate();
 
   function getForm(
     formNumber: Options,
@@ -128,7 +129,14 @@ function Login() {
     }
   }
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const localName = localStorage.getItem("fila-sus-name");
+    const localLocation = localStorage.getItem("fila-sus-location");
+
+    if (localName && localLocation) {
+      navigate("/");
+    }
+  });
 
   return (
     <Box

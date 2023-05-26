@@ -11,13 +11,26 @@ import {
   Text,
   IconButton,
   Heading,
+  Button,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import { useUser } from "../context/useContext";
+import { useNavigate } from "react-router-dom";
 
 function MainLayout({ children }: PropsWithChildren) {
-  const { name, location } = useUser();
+  const { name, location, setName, setLocation } = useUser();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+
+  function logOut() {
+    setName("");
+    setLocation("");
+
+    localStorage.removeItem("fila-sus-name");
+    localStorage.removeItem("fila-sus-location");
+
+    navigate("/login");
+  }
 
   return (
     <Box display="flex" flexDir="column" height="100%" width="100%">
@@ -41,8 +54,15 @@ function MainLayout({ children }: PropsWithChildren) {
               onClick={onClose}
             />
           </DrawerHeader>
-          <DrawerBody>
-            <p>option</p>
+          <DrawerBody display="flex" flexDir="column">
+            <Button
+              mt="auto"
+              variant="ghost"
+              fontSize="xl"
+              onClick={() => logOut()}
+            >
+              Sair
+            </Button>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
