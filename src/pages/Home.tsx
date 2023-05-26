@@ -63,8 +63,8 @@ function Home() {
           display="flex"
           flexDir="column"
           justifyContent="space-between"
-          bg="blue.100"
-          p={3}
+          bg="blue.500"
+          p="3"
         >
           <Box display="flex" flexDir="column" justifyContent="space-between">
             {lines

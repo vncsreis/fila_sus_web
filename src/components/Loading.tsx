@@ -8,7 +8,7 @@ function Loading() {
       display="flex"
       flexDir="column"
       alignItems="center"
-      bg="blue.100"
+      bg="blue.500"
       p={3}
     >
       <Text
