@@ -103,10 +103,12 @@ function Login() {
               >
                 <FormLabel>Unidade:</FormLabel>
                 <Select
-                  placeholder="Unidade de saúde"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                 >
+                  <option hidden value="">
+                    Selecionar unidade
+                  </option>
                   <option value="Celso Ramos">Celso Ramos</option>
                   <option value="Hospital Universitário">
                     Hospital Universitário
