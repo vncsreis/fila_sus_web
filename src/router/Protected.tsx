@@ -9,7 +9,7 @@ function Protected({ children }: PropsWithChildren) {
   const [content, setContent] = useState<ReactNode | null>(null);
 
   useEffect(() => {
-    if (name === "" && location === "") {
+    if (name === "" || location === "") {
       setContent(null);
       navigate("/login");
     } else {
