@@ -7,25 +7,30 @@ import { Priority } from "../data/priority";
 import MainLayout from "../layout/Main";
 import Loading from "../components/Loading";
 import ServerResponse from "../data/serverResponse";
-import { useUser } from "../context/useContext";
+import { useError, useUser } from "../context/useContext";
+import { useNavigate } from "react-router-dom";
 
 async function getUserInfo(userName: string) {
-  const { response }: ServerResponse = await fetch(
-    `https://script.google.com/macros/s/AKfycbxnxNqHTbXqCM_Q4_jxMliMsoaF0H_87Uyt35ef3EazZAMN-KtMGPbDm_DXCh7Nb8zMrg/exec?name=${userName}`
-  ).then((p) => p.json());
+  try {
+    const { response }: ServerResponse = await fetch(
+      `https://script.google.com/macros/s/AKfycbxnxNqHTbXqCM_Q4_jxMliMsoaF0H_87Uyt35ef3EazZAMN-KtMGPbDm_DXCh7Nb8zMrg/exec?name=${userName}`
+    ).then((p) => p.json());
 
-  const { pacientPosition, pacientColor } = response;
+    const { pacientPosition, pacientColor } = response;
 
-  const { red, green, yellow, blue } = response.colors;
+    const { red, green, yellow, blue } = response.colors;
 
-  return {
-    pacientPosition,
-    pacientColor,
-    red: { priority: "red", amount: red },
-    green: { priority: "green", amount: green },
-    yellow: { priority: "yellow", amount: yellow },
-    blue: { priority: "blue", amount: blue },
-  };
+    return {
+      pacientPosition,
+      pacientColor,
+      red: { priority: "red", amount: red },
+      green: { priority: "green", amount: green },
+      yellow: { priority: "yellow", amount: yellow },
+      blue: { priority: "blue", amount: blue },
+    };
+  } catch (err) {
+    return null;
+  }
 }
 
 function Home() {
@@ -34,21 +39,53 @@ function Home() {
   const [userPosition, setUserPosition] = useState<number>(0);
   const [userPriority, setUserPriority] = useState(Priority.GREEN);
   const { name } = useUser();
+  const { setError } = useError();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      const { pacientPosition, pacientColor, red, green, yellow, blue } =
-        await getUserInfo(name);
 
-      const line = [red, green, yellow, blue];
+      const res = await getUserInfo(name);
 
-      setUserPosition(pacientPosition);
-      setUserPriority(pacientColor);
-      setLines(line);
-      setIsLoading(false);
+      if (res === null) {
+        setError(true);
+        navigate("/err");
+      } else {
+        const { pacientPosition, pacientColor, red, green, yellow, blue } = res;
+
+        const line = [red, green, yellow, blue];
+
+        setUserPosition(pacientPosition);
+        setUserPriority(pacientColor);
+        setLines(line);
+        setIsLoading(false);
+      }
     })();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      console.log("fetching");
+
+      const res = await getUserInfo(name);
+
+      if (res === null) {
+        setError(true);
+        navigate("/err");
+      } else {
+        const { pacientPosition, pacientColor, red, green, yellow, blue } = res;
+
+        const line = [red, green, yellow, blue];
+
+        setUserPosition(pacientPosition);
+        setUserPriority(pacientColor);
+        setLines(line);
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  });
 
   return (
     <MainLayout>
