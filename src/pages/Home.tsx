@@ -82,7 +82,7 @@ function Home() {
         setUserPriority(pacientColor);
         setLines(line);
       }
-    }, 30000);
+    }, 60000);
 
     return () => clearInterval(interval);
   });
