@@ -6,29 +6,26 @@ import LineCard from "../components/LineCard";
 import { Priority } from "../data/priority";
 import MainLayout from "../layout/Main";
 import Loading from "../components/Loading";
+import ServerResponse from "../data/serverResponse";
+import { useUser } from "../context/useContext";
 
-async function getLine(): Promise<Line[]> {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return [
-    {
-      priority: "green",
-      amount: 10,
-    },
-    {
-      priority: "yellow",
-      amount: 15,
-    },
-    {
-      priority: "red",
-      amount: 17,
-    },
-  ];
-}
+async function getUserInfo(userName: string) {
+  const { response }: ServerResponse = await fetch(
+    `https://script.google.com/macros/s/AKfycbxnxNqHTbXqCM_Q4_jxMliMsoaF0H_87Uyt35ef3EazZAMN-KtMGPbDm_DXCh7Nb8zMrg/exec?name=${userName}`
+  ).then((p) => p.json());
 
-async function getUserInfo(): Promise<[number, Priority]> {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  const { pacientPosition, pacientColor } = response;
 
-  return [42, Priority.GREEN];
+  const { red, green, yellow, blue } = response.colors;
+
+  return {
+    pacientPosition,
+    pacientColor,
+    red: { priority: "red", amount: red },
+    green: { priority: "green", amount: green },
+    yellow: { priority: "yellow", amount: yellow },
+    blue: { priority: "blue", amount: blue },
+  };
 }
 
 function Home() {
@@ -36,18 +33,19 @@ function Home() {
   const [lines, setLines] = useState<Line[]>([]);
   const [userPosition, setUserPosition] = useState<number>(0);
   const [userPriority, setUserPriority] = useState(Priority.GREEN);
+  const { name } = useUser();
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      const [gotLine, [gotPosition, gotPriority]] = await Promise.all([
-        getLine(),
-        getUserInfo(),
-      ]);
+      const { pacientPosition, pacientColor, red, green, yellow, blue } =
+        await getUserInfo(name);
 
-      setUserPosition(gotPosition);
-      setUserPriority(gotPriority);
-      setLines(gotLine);
+      const line = [red, green, yellow, blue];
+
+      setUserPosition(pacientPosition);
+      setUserPriority(pacientColor);
+      setLines(line);
       setIsLoading(false);
     })();
   }, []);
@@ -64,7 +62,7 @@ function Home() {
           flexDir="column"
           justifyContent="space-between"
           bg="blue.500"
-          p="3"
+          p="2"
         >
           <Box display="flex" flexDir="column" justifyContent="space-between">
             {lines
@@ -89,6 +87,9 @@ function Home() {
                     break;
                   case "red":
                     priority = Priority.RED;
+                    break;
+                  case "blue":
+                    priority = Priority.BLUE;
                     break;
                 }
 

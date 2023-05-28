@@ -8,5 +8,7 @@ export default function getPriorityColor(priority: Priority) {
       return "yellow.400";
     case Priority.RED:
       return "red.500";
+    case Priority.BLUE:
+      return "blue.700";
   }
 }

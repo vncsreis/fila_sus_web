@@ -7,6 +7,19 @@ interface UserCardProps {
   priority: Priority;
 }
 
+function getPriorityText(priority: Priority) {
+  switch (priority) {
+    case Priority.RED:
+      return "Emergência";
+    case Priority.YELLOW:
+      return "Urgente";
+    case Priority.GREEN:
+      return "Pouco Urgente";
+    case Priority.BLUE:
+      return "Não Urgente";
+  }
+}
+
 function UserCard({ position, priority }: UserCardProps) {
   return (
     <Card
@@ -26,7 +39,7 @@ function UserCard({ position, priority }: UserCardProps) {
           color={getPriorityColor(priority)}
           textShadow="1px 1px 2px rgba(0, 0, 0, 0.1)"
         >
-          Pouco Urgente
+          {getPriorityText(priority)}
         </Text>
       </CardBody>
     </Card>

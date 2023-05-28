@@ -1,5 +1,6 @@
 export enum Priority {
-  GREEN,
-  YELLOW,
-  RED,
+  GREEN = "green",
+  YELLOW = "yellow",
+  RED = "red",
+  BLUE = "blue",
 }

@@ -7,7 +7,7 @@ import {
   Heading,
   Image,
   Input,
-  Select,
+  // Select,
 } from "@chakra-ui/react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import people from "../imgs/diversas-pessoas-esperando-na-fila-do-hospital-e-assinando-papéis-que-o-médico-dá-aguardando-para-tomar-tiros-ou-serem-testadas-204700619.jpg";
@@ -19,7 +19,7 @@ type Options = 1 | 2 | 3;
 function Login() {
   const { setName: setUserName, setLocation: setUserLocation } = useUser();
   const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+  // const [location, setLocation] = useState("");
   const [formNumber, setFormNumber] = useState<Options>(1);
   const navigate = useNavigate();
 
@@ -60,7 +60,10 @@ function Login() {
                 borderRadius="10"
                 onSubmit={(e: FormEvent) => {
                   e.preventDefault();
-                  setFormNumber(3);
+                  setUserName(name);
+                  setUserLocation("TESTE");
+                  // setFormNumber(3);
+                  navigate("/");
                 }}
               >
                 <FormLabel>Nome:</FormLabel>
@@ -82,50 +85,50 @@ function Login() {
           </>
         );
 
-      case 3:
-        return (
-          <>
-            <Heading size="xl" p="7">
-              Fila SUS
-            </Heading>
-            <FormControl>
-              <Box
-                as="form"
-                bg="white"
-                color="black"
-                p="5"
-                borderRadius="10"
-                onSubmit={(e: FormEvent) => {
-                  e.preventDefault();
-                  setUserName(name);
-                  setUserLocation(location);
-                  navigate("/");
-                }}
-              >
-                <FormLabel>Unidade:</FormLabel>
-                <Select
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                >
-                  <option hidden value="">
-                    Selecionar unidade
-                  </option>
-                  <option value="Celso Ramos">Celso Ramos</option>
-                  <option value="Hospital Universitário">
-                    Hospital Universitário
-                  </option>
-                </Select>
-                <FormHelperText py="4">
-                  Agora selecione a unidade onde você aguarda atendimento.
-                </FormHelperText>
-
-                <Button type="submit" colorScheme="facebook">
-                  Próximo
-                </Button>
-              </Box>
-            </FormControl>
-          </>
-        );
+      // case 3:
+      //   return (
+      //     <>
+      //       <Heading size="xl" p="7">
+      //         Fila SUS
+      //       </Heading>
+      //       <FormControl>
+      //         <Box
+      //           as="form"
+      //           bg="white"
+      //           color="black"
+      //           p="5"
+      //           borderRadius="10"
+      //           onSubmit={(e: FormEvent) => {
+      //             e.preventDefault();
+      //             setUserName(name);
+      //             setUserLocation(location);
+      //             navigate("/");
+      //           }}
+      //         >
+      //           <FormLabel>Unidade:</FormLabel>
+      //           <Select
+      //             value={location}
+      //             onChange={(e) => setLocation(e.target.value)}
+      //           >
+      //             <option hidden value="">
+      //               Selecionar unidade
+      //             </option>
+      //             <option value="Celso Ramos">Celso Ramos</option>
+      //             <option value="Hospital Universitário">
+      //               Hospital Universitário
+      //             </option>
+      //           </Select>
+      //           <FormHelperText py="4">
+      //             Agora selecione a unidade onde você aguarda atendimento.
+      //           </FormHelperText>
+      //
+      //           <Button type="submit" colorScheme="facebook">
+      //             Próximo
+      //           </Button>
+      //         </Box>
+      //       </FormControl>
+      //     </>
+      //   );
     }
   }
 

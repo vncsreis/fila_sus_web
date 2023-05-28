@@ -18,14 +18,14 @@ interface LineCardProps {
 
 function LineCard({ amount, priority }: LineCardProps) {
   return (
-    <Card textAlign="center" m={3} shadow="md">
+    <Card textAlign="center" m="1" shadow="md">
       <CardHeader
         bg={getPriorityColor(priority)}
         borderRadius={5}
         fontSize="2xl"
         fontWeight="bold"
         color="white"
-        p={3}
+        p="2"
       >
         <Text textShadow="1px 2px 3px rgba(0, 0, 0, 0.5)">{amount}</Text>
       </CardHeader>
@@ -41,6 +41,8 @@ function LineCard({ amount, priority }: LineCardProps) {
                     return <Text>Urgência</Text>;
                   case Priority.GREEN:
                     return <Text>Pouco Urgente</Text>;
+                  case Priority.BLUE:
+                    return <Text>Não Urgente</Text>;
                 }
               })(priority)}
             </Heading>
