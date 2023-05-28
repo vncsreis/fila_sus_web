@@ -54,7 +54,28 @@ function Home() {
       } else {
         const { pacientPosition, pacientColor, red, green, yellow, blue } = res;
 
-        const line = [red, green, yellow, blue];
+        const line: Line[] = [
+          {
+            position: 1,
+            priority: red.priority,
+            amount: red.amount,
+          },
+          {
+            position: 2,
+            priority: yellow.priority,
+            amount: yellow.amount,
+          },
+          {
+            position: 3,
+            priority: green.priority,
+            amount: green.amount,
+          },
+          {
+            position: 4,
+            priority: blue.priority,
+            amount: blue.amount,
+          },
+        ];
 
         setUserPosition(pacientPosition);
         setUserPriority(pacientColor);
@@ -76,7 +97,28 @@ function Home() {
       } else {
         const { pacientPosition, pacientColor, red, green, yellow, blue } = res;
 
-        const line = [red, green, yellow, blue];
+        const line: Line[] = [
+          {
+            position: 1,
+            priority: red.priority,
+            amount: red.amount,
+          },
+          {
+            position: 2,
+            priority: yellow.priority,
+            amount: yellow.amount,
+          },
+          {
+            position: 3,
+            priority: green.priority,
+            amount: green.amount,
+          },
+          {
+            position: 4,
+            priority: blue.priority,
+            amount: blue.amount,
+          },
+        ];
 
         setUserPosition(pacientPosition);
         setUserPriority(pacientColor);
@@ -104,13 +146,7 @@ function Home() {
           <Box display="flex" flexDir="column" justifyContent="space-between">
             {lines
               .sort((a, b): number => {
-                if (a.priority == "red") {
-                  return -1;
-                } else if (a.priority != "red" && b.priority == "green") {
-                  return -1;
-                }
-
-                return 0;
+                return a.position - b.position;
               })
               .map((line: Line) => {
                 let priority;
